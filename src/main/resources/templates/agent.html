@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almaty Polytech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Базовые настройки */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #333333;
+            background-color: #f9f9f9;
+            scroll-behavior: smooth;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Контейнер для агента */
+        .agent-container {
+            position: absolute; /* Размещаем контейнер абсолютно */
+            top: 50%; /* Центрируем по вертикали */
+            left: 50%; /* Центрируем по горизонтали */
+            transform: translate(-50%, -50%); /* Чтобы центр был в точке пересечения */
+            width: 80%; /* Ширина контейнера */
+            max-width: 800px;
+            height: auto;
+            text-align: center;
+        }
+
+        #did-agent {
+            width: 100%; /* Устанавливаем ширину агента */
+            height: auto;
+            transform: scale(1.5); /* Увеличиваем агента */
+            transform-origin: center center; /* Устанавливаем точку масштабирования */
+        }
+
+        /* Фиксированное меню */
+        header {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            color: #ffffff;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand img {
+            width: 80px;
+            padding: 4px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Соцсети */
+        .info-socials a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            color: #ff4b2b;
+            border-radius: 50%;
+            margin: 0 6px;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .info-socials a:hover {
+            background: #ff4b2b;
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        /* Язык */
+        .language, .v-visually {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin: 0 12px;
+        }
+        .language:hover, .v-visually:hover {
+            color: #ffcccc;
+        }
+
+        /* Кнопка навигации */
+        .btn-pushmenu {
+            background-color: #ffffff;
+            color: #ff4b2b;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 75, 43, 0.2);
+            cursor: pointer;
+        }
+
+        .btn-pushmenu:hover {
+            background-color: #ff4b2b;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .btn-pushmenu:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 75, 43, 0.5);
+        }
+
+        /* Навигация */
+        .sidebar {
+            background-color: #fefefe;
+            color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            transition: opacity 0.3s ease;
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            width: 250px;
+        }
+        .sidebar a {
+            color: #ff4b2b;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 0;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            color: #333333;
+            padding-left: 10px;
+        }
+
+        /* Медиазапросы для мобильных устройств */
+        @media (max-width: 767px) {
+            /* Стиль для мобильных телефонов */
+            header {
+                padding: 10px 0;
+            }
+
+            .navbar-brand img {
+                width: 60px;
+            }
+
+            .btn-pushmenu {
+                padding: 8px 16px;
+            }
+
+            .info-socials a {
+                width: 35px;
+                height: 35px;
+                font-size: 1.1rem;
+            }
+
+            .agent-container {
+                width: 90%; /* Сделаем контейнер чуть шире на мобильных устройствах */
+                max-width: 90%;
+                top: 40%;
+            }
+
+            #did-agent {
+                transform: scale(1); /* Уменьшаем масштаб агента для мобильных */
+            }
+        }
+
+        @media (min-width: 768px) {
+            /* Стиль для планшетов и ПК */
+            .agent-container {
+                width: 80%;
+                max-width: 800px;
+            }
+
+            #did-agent {
+                transform: scale(1.5); /* Оставляем больший масштаб для планшетов и ПК */
+            }
+        }
+
+         main {
+            margin-top: 60px;
+            width: 80%;
+            text-align: left;
+            padding-left: 10%;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            color: #ff4b2b;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 2s ease-out;
+        }
+
+        .main-content {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 20px;
+            line-height: 1.6;
+            animation: fadeInUp 2.5s ease-out;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+         .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background-color: #ff4b2b;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #ff3a1a;
+            transform: scale(1.1);
+        }
+
+        /* Боковая панель */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px; /* Изначально скрыта */
+            width: 300px;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            left: 0; /* Показываем панель */
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            color: #ff4b2b;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            color: #333333;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            color: #ff4b2b;
+            padding-left: 10px;
+        }
+
+    </style>
+    <div class="agent-container">
+
+        <script
+                type="module"
+                src="https://agent.d-id.com/v1/index.js"
+                data-name="did-agent"
+                data-mode="fabio"
+                data-client-key="YXV0aDB8NjczYWJhMmM4N2E3YmVkNDAzMmUyYmRmOnQtQUhReEZVa3pnQkVobmkwLURFMA=="
+                data-agent-id="agt_MdkLNm85"
+                data-monitor="true">
+        </script>
+
+    </div>
+
+</head>
+<body>
+
+<header class="bg-header animated">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-4 col-md-1 text-center">
+                <a class="navbar-brand" href="https://almatypolytech.edu.kz/">
+                    <img src="https://almatypolytech.edu.kz/assets/svg/logo.svg" alt="logo">
+                </a>
+            </div>
+            <div class="col-8 col-md-5 d-flex align-items-center justify-content-between">
+                <div class="info-socials">
+                    <a href="https://edu.aspc.kz" target="_blank" rel="nofollow">
+                        <img src="https://almatypolytech.edu.kz/assets/svg/moodle.svg" alt="Moodle" width="24">
+                    </a>
+                    <a href="https://www.instagram.com/polytechalmaty" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://facebook.com" target="_blank">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@almatypolytechedukz" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://www.tiktok.com" target="_blank">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+                <div>
+                    <a href="/" class="language" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="?lang=kz" class="dropdown-item">Қазақ</a></li>
+                        <li><a href="?lang=ru" class="dropdown-item">Русский</a></li>
+                        <li><a href="?lang=en" class="dropdown-item">English</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="text-container">
+        <h1 class="main-title">Виртуальный агент политеха</h1>
+        <p class="main-content">Добро пожаловать в мир политеха! Здесь вы найдете полезную информацию о нашем колледже, образовательных программах и возможностях для студентов. Узнайте больше, и позвольте нашему агенту ответить на все ваши вопросы.</p>
+    </div>
+</main>
+</main>
+
+
+
+</body>
+
+<script>
+    const translations = {
+        kz: {
+            title: "Виртуалды агент политех",
+            content: "Политех әлеміне қош келдіңіз! Мұнда колледж туралы, білім беру бағдарламалары мен студенттерге арналған мүмкіндіктер туралы ақпарат таба аласыз. Біздің агентіміз барлық сұрақтарыңызға жауап беруге дайын."
+        },
+        ru: {
+            title: "Виртуальный агент политеха",
+            content: "Добро пожаловать в мир политеха! Здесь вы найдете полезную информацию о нашем колледже, образовательных программах и возможностях для студентов. Узнайте больше, и позвольте нашему агенту ответить на все ваши вопросы."
+        },
+        en: {
+            title: "Polytech Virtual Agent",
+            content: "Welcome to the world of Polytech! Here, you will find useful information about our college, educational programs, and opportunities for students. Learn more and let our agent answer all your questions."
+        }
+    };
+
+    // Функция для смены языка
+    function changeLanguage(language) {
+        document.querySelector('.main-title').textContent = translations[language].title;
+        document.querySelector('.main-content').textContent = translations[language].content;
+    }
+
+    // Обработчики для кнопок смены языка
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', (event) => {
+            event.preventDefault();
+            const language = item.getAttribute('href').split('=')[1];
+            changeLanguage(language);
+        });
+    });
+    // Переключение боковой панели
+    const menuButton = document.getElementById('menu-button');
+    const sidebar = document.getElementById('sidebar');
+
+    menuButton.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
+</script>
+
+
+</html>
